@@ -1,5 +1,4 @@
 import { server } from "./server.js"
-
 const form = document.querySelector("#form")
 const input = document.querySelector("#url")
 const content = document.querySelector("#content")
@@ -19,28 +18,14 @@ form.addEventListener("submit", async (event) => {
 
   content.textContent = "Obtendo o texto do audio..."
 
-  try {
-    const transcriptionResponse = await server.get(`/summary/${videoID}`)
+  const transcription = await server.get("/summary/" + videoID)
 
-    if (transcriptionResponse.data && transcriptionResponse.data.result) {
-      content.textContent = "Realizando o resumo..."
+  content.textContent = "Realizando o resumo..."
 
-      const summaryResponse = await server.post("/summary", {
-        text: transcriptionResponse.data.result,
-      })
+  const summary = await server.post("/summary", {
+    text: transcription.data.result,
+  })
 
-      if (summaryResponse.data && summaryResponse.data.result) {
-        content.textContent = summaryResponse.data.result
-      } else {
-        content.textContent = "Erro ao obter o resumo."
-      }
-    } else {
-      content.textContent = "Erro ao obter a transcrição."
-    }
-  } catch (error) {
-    console.error("Erro ao processar o vídeo:", error)
-    content.textContent = "Ocorreu um erro ao processar o vídeo."
-  }
-
+  content.textContent = summary.data.result
   content.classList.remove("placeholder")
 })
