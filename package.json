@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "web": "vite"
+    "web": "vite",
+    "build": "vite build"
   },
   "devDependencies": {
     "vite": "^4.4.5"
